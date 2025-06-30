@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Canva Clone</title>
+		<link rel="stylesheet" href="style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div id="loading-overlay">
+			<div class="spinner"></div>
+			<p>Loading Canva Clone...</p>
+		</div>
+
+		<div class="app-container">
+			<div class="sidebar">
+				<div class="logo">
+					<h2>Canva</h2>
+				</div>
+				<div class="tools">
+					<div class="tool-group">
+						<h3>Elements</h3>
+						<div class="tool" data-tool="text">
+							<i class="fas fa-font"></i>
+							<span>Text</span>
+						</div>
+						<div class="tool" data-tool="shapes">
+							<i class="fas fa-shapes"></i>
+							<span>Shapes</span>
+						</div>
+						<div class="tool" data-tool="upload">
+							<i class="fas fa-upload"></i>
+							<span>Upload</span>
+						</div>
+					</div>
+					<div class="tool-group">
+						<h3>Templates</h3>
+						<div class="templates-list">
+							<div class="template" style="background-color: #f8d7da">
+								<span>Social Media</span>
+							</div>
+							<div class="template" style="background-color: #d1e7dd">
+								<span>Presentation</span>
+							</div>
+							<div class="template" style="background-color: #cfe2ff">
+								<span>Print</span>
+							</div>
+						</div>
+					</div>
+					<div class="tool-group">
+						<h3>Background</h3>
+						<div class="color-picker">
+							<div class="color" style="background-color: #ffffff"></div>
+							<div class="color" style="background-color: #f8f9fa"></div>
+							<div class="color" style="background-color: #e9ecef"></div>
+							<div class="color" style="background-color: #dee2e6"></div>
+							<div class="color" style="background-color: #ced4da"></div>
+						</div>
+					</div>
+
+					<div class="tool-group">
+						<h3>Help</h3>
+						<div class="help-text">
+							<p>
+								<i class="fas fa-mouse-pointer"></i> Click elements to select
+							</p>
+							<p><i class="fas fa-arrows-alt"></i> Drag to move</p>
+							<p><i class="fas fa-keyboard"></i> Delete key to remove</p>
+							<p><i class="fas fa-copy"></i> Ctrl+D to duplicate</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="main-area">
+				<div class="top-bar">
+					<div class="file-options">
+						<button id="sidebar-toggle" class="btn mobile-only">
+							<i class="fas fa-bars"></i>
+						</button>
+						<button class="btn"><i class="fas fa-home"></i> Home</button>
+						<button class="btn"><i class="fas fa-folder"></i> File</button>
+						<button class="btn">
+							<i class="fas fa-download"></i> Download
+						</button>
+						<button class="btn"><i class="fas fa-share"></i> Share</button>
+					</div>
+					<div class="action-buttons">
+						<button id="mobile-controls-toggle" class="btn mobile-only">
+							<i class="fas fa-edit"></i>
+						</button>
+						<button id="properties-toggle" class="btn mobile-only">
+							<i class="fas fa-sliders-h"></i>
+						</button>
+						<button class="primary-btn">Publish</button>
+					</div>
+				</div>
+
+				<div class="element-controls hidden">
+					<div class="control-title">Edit</div>
+					<div class="control-group">
+						<button class="control-btn" id="delete-btn" title="Delete">
+							<i class="fas fa-trash"></i>
+						</button>
+						<button class="control-btn" id="duplicate-btn" title="Duplicate">
+							<i class="fas fa-copy"></i>
+						</button>
+						<button
+							class="control-btn"
+							id="bring-front-btn"
+							title="Bring to Front"
+						>
+							<i class="fas fa-level-up-alt"></i>
+						</button>
+						<button class="control-btn" id="send-back-btn" title="Send to Back">
+							<i class="fas fa-level-down-alt"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="canvas-container">
+					<div id="canvas">
+						<div
+							class="canvas-element text-element"
+							style="top: 100px; left: 150px"
+						>
+							<p>Sample Text (Try Using tools most of them are working)</p>
+						</div>
+						<div
+							class="canvas-element shape-element"
+							style="
+								top: 200px;
+								left: 300px;
+								width: 150px;
+								height: 150px;
+								background-color: #4dabf7;
+							"
+						></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="properties-panel">
+				<h3>Properties</h3>
+				<div class="property-group">
+					<label>Size</label>
+					<div class="size-inputs">
+						<div class="input-group">
+							<span>W:</span>
+							<input type="number" id="element-width" value="100" />
+						</div>
+						<div class="input-group">
+							<span>H:</span>
+							<input type="number" id="element-height" value="100" />
+						</div>
+					</div>
+				</div>
+				<div class="property-group">
+					<label>Position</label>
+					<div class="position-inputs">
+						<div class="input-group">
+							<span>X:</span>
+							<input type="number" id="element-x" value="0" />
+						</div>
+						<div class="input-group">
+							<span>Y:</span>
+							<input type="number" id="element-y" value="0" />
+						</div>
+					</div>
+				</div>
+				<div class="property-group">
+					<label>Fill</label>
+					<div class="color-picker">
+						<div class="color" style="background-color: #ffffff"></div>
+						<div class="color" style="background-color: #f03e3e"></div>
+						<div class="color" style="background-color: #4dabf7"></div>
+						<div class="color" style="background-color: #40c057"></div>
+						<div class="color" style="background-color: #fab005"></div>
+					</div>
+				</div>
+				<div class="property-group text-properties">
+					<label>Text</label>
+					<select id="font-family">
+						<option value="Poppins">Poppins</option>
+						<option value="Arial">Arial</option>
+						<option value="Georgia">Georgia</option>
+						<option value="Verdana">Verdana</option>
+					</select>
+					<div class="text-style-buttons">
+						<button class="text-style-btn" id="bold-btn" title="Bold">
+							<i class="fas fa-bold"></i>
+						</button>
+						<button class="text-style-btn" id="italic-btn" title="Italic">
+							<i class="fas fa-italic"></i>
+						</button>
+						<button class="text-style-btn" id="underline-btn" title="Underline">
+							<i class="fas fa-underline"></i>
+						</button>
+					</div>
+					<div class="alignment-buttons">
+						<button class="alignment-btn" id="align-left" title="Align Left">
+							<i class="fas fa-align-left"></i>
+						</button>
+						<button
+							class="alignment-btn"
+							id="align-center"
+							title="Align Center"
+						>
+							<i class="fas fa-align-center"></i>
+						</button>
+						<button class="alignment-btn" id="align-right" title="Align Right">
+							<i class="fas fa-align-right"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="empty-state">
+					<i class="fas fa-mouse-pointer"></i>
+					<p>Select an element to edit its properties</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="shapes-menu hidden">
+			<div class="shape-option" data-shape="rectangle">
+				<div class="shape-preview rectangle"></div>
+				<span>Rectangle</span>
+			</div>
+			<div class="shape-option" data-shape="circle">
+				<div class="shape-preview circle"></div>
+				<span>Circle</span>
+			</div>
+			<div class="shape-option" data-shape="triangle">
+				<div class="shape-preview triangle"></div>
+				<span>Triangle</span>
+			</div>
+		</div>
+
+		<div id="notification-toast" class="hidden">
+			<i class="fas fa-info-circle"></i>
+			<span id="notification-message"></span>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
