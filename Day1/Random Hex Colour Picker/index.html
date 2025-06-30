@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Random Hex Color Picker</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				padding-top: 100px;
+				transition: background-color 0.4s;
+			}
+			button {
+				padding: 12px 24px;
+				font-size: 18px;
+				cursor: pointer;
+			}
+			#colorDisplay {
+				margin-top: 20px;
+				font-size: 22px;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<button onclick="pickColor()">Pick Random Color</button>
+		<div id="colorDisplay">Click the button to start</div>
+
+		<script>
+			let colorArray = [
+				"#FF0000",
+				"#00FF00",
+				"#0000FF",
+				"#FFFF00",
+				"#FF00FF",
+				"#00FFFF",
+			];
+
+			function pickColor() {
+				if (colorArray.length === 0) {
+					document.getElementById("colorDisplay").textContent =
+						"All colors used!";
+					return;
+				}
+				const randomIndex = Math.floor(Math.random() * colorArray.length);
+				const selectedColor = colorArray[randomIndex];
+				document.body.style.backgroundColor = selectedColor;
+				document.getElementById(
+					"colorDisplay"
+				).textContent = `Color: ${selectedColor}`;
+				colorArray.splice(randomIndex, 1);
+				console.log("Remaining colors:", colorArray);
+			}
+		</script>
+	</body>
+</html>
