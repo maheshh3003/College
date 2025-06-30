@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.headerrrr {
+    background-color: lightgray;
+    padding: 10px;
+}
+
+.navvvvv ul {
+    list-style: none;
+}
+
+.navvvvv li {
+    display: inline;
+    margin-right: 15px;
+}
+
+.navvvvv a {
+    text-decoration: none;
+    color: black;
+}
+
+.blogggg {
+    background-color: lightblue;
+}
+
+.sidebarr {
+    background-color: lightgreen;
+}
+
+.blogggg {
+    padding: 10px;
+    border: 2px solid black;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.blogggg:hover {
+    transform: scale(1.02);
+}
+.navvvvv a:hover {
+    color: blue;
+}
+
+.layouttt {
+    display: flex;
+}
+
+.mainnnn {
+    flex: 2;
+    padding: 10px;
+}
+
+.sidebarr {
+    flex: 1;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .layouttt {
+        flex-direction: column;
+    }
+}
