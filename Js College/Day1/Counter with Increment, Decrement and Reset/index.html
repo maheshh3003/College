@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Counter with Increment, Decrement, Reset</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				margin-top: 100px;
+			}
+			#counter {
+				font-size: 48px;
+				margin: 20px;
+			}
+			button {
+				padding: 10px 20px;
+				font-size: 18px;
+				margin: 5px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Counter</h1>
+		<div id="counter">0</div>
+
+		<button onclick="decrement()">Decrement</button>
+		<button onclick="reset()">Reset</button>
+		<button onclick="increment()">Increment</button>
+
+		<script>
+			let count = 0;
+
+			function updateDisplay() {
+				document.getElementById("counter").textContent = count;
+			}
+
+			function increment() {
+				count++;
+				updateDisplay();
+			}
+
+			function decrement() {
+				count--;
+				updateDisplay();
+			}
+
+			function reset() {
+				count = 0;
+				updateDisplay();
+			}
+		</script>
+	</body>
+</html>

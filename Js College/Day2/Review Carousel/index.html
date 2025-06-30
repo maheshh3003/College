@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Simple Review Carousel</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background-color: lightblue;
+				text-align: center;
+				padding: 20px;
+			}
+
+			.container {
+				background-color: white;
+				width: 400px;
+				margin: 0 auto;
+				padding: 20px;
+				border-radius: 10px;
+			}
+
+			.review-box {
+				background-color: lightgray;
+				padding: 20px;
+				margin: 20px 0;
+				border-radius: 5px;
+			}
+
+			.name {
+				font-size: 20px;
+				font-weight: bold;
+				color: blue;
+			}
+
+			.review {
+				font-size: 16px;
+				margin: 10px 0;
+			}
+
+			.stars {
+				font-size: 20px;
+				color: gold;
+			}
+
+			button {
+				background-color: blue;
+				color: white;
+				padding: 10px 20px;
+				margin: 10px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: darkblue;
+			}
+
+			.counter {
+				margin-top: 20px;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Customer Reviews</h1>
+
+			<div class="review-box" id="reviewBox"></div>
+
+			<button onclick="previousReview()">Previous</button>
+			<button onclick="nextReview()">Next</button>
+
+			<div class="counter" id="counter">Review 1 of 3</div>
+		</div>
+
+		<script>
+			var reviews = [
+				{
+					name: "John",
+					text: "Great service! I loved it!",
+					stars: "⭐⭐⭐⭐⭐",
+				},
+				{
+					name: "Sarah",
+					text: "Amazing experience. Highly recommend!",
+					stars: "⭐⭐⭐⭐⭐",
+				},
+				{
+					name: "Mike",
+					text: "Good quality and fast delivery.",
+					stars: "⭐⭐⭐⭐",
+				},
+			];
+			var currentReview = 0;
+			function showReview() {
+				var reviewBox = document.getElementById("reviewBox");
+				var review = reviews[currentReview];
+				reviewBox.innerHTML =
+					"<div class='stars'>" +
+					review.stars +
+					"</div>" +
+					"<div class='name'>" +
+					review.name +
+					"</div>" +
+					"<div class='review'>\"" +
+					review.text +
+					'"</div>';
+
+				var counter = document.getElementById("counter");
+				counter.innerHTML =
+					"Review " + (currentReview + 1) + " of " + reviews.length;
+			}
+
+			function nextReview() {
+				if (currentReview < reviews.length - 1) {
+					currentReview = currentReview + 1;
+				} else {
+					currentReview = 0;
+				}
+				showReview();
+			}
+
+			// Function to go to previous review
+			function previousReview() {
+				// If not at first review, go to previous
+				if (currentReview > 0) {
+					currentReview = currentReview - 1;
+				} else {
+					// If at first review, go to last
+					currentReview = reviews.length - 1;
+				}
+				showReview();
+			}
+
+			// Show the first review when page loads
+			showReview();
+		</script>
+	</body>
+</html>

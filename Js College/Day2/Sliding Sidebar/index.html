@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>My Sidebar Menu</title>
+		<style>
+			body {
+				margin: 0;
+				font-family: Arial;
+				background-color: lightgray;
+			}
+
+			.header {
+				background-color: blue;
+				color: white;
+				padding: 20px;
+				text-align: center;
+			}
+
+			.menu-button {
+				position: fixed;
+				top: 20px;
+				left: 20px;
+				background-color: red;
+				color: white;
+				border: none;
+				padding: 10px 15px;
+				cursor: pointer;
+				font-size: 18px;
+				border-radius: 5px;
+			}
+
+			.menu-button:hover {
+				background-color: darkred;
+			}
+
+			.sidebar {
+				position: fixed;
+				top: 0;
+				left: -250px;
+				width: 250px;
+				height: 100%;
+				background-color: darkblue;
+				color: white;
+				transition: left 0.3s ease;
+				z-index: 1000;
+			}
+
+			.sidebar.open {
+				left: 0;
+			}
+
+			.sidebar-header {
+				background-color: black;
+				padding: 20px;
+				text-align: center;
+			}
+
+			.sidebar ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.sidebar li {
+				padding: 15px 20px;
+				border-bottom: 1px solid gray;
+			}
+
+			.sidebar li:hover {
+				background-color: lightblue;
+				color: black;
+			}
+
+			.sidebar a {
+				color: white;
+				text-decoration: none;
+			}
+
+			.sidebar a:hover {
+				color: black;
+			}
+
+			.close-btn {
+				float: right;
+				background: none;
+				border: none;
+				color: white;
+				font-size: 20px;
+				cursor: pointer;
+			}
+
+			.content {
+				padding: 20px;
+				margin-top: 50px;
+			}
+
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: black;
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.3s ease;
+				z-index: 999;
+			}
+
+			.overlay.show {
+				opacity: 0.5;
+				visibility: visible;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>My Awesome Website</h1>
+			<p>This is my first website with a sidebar!</p>
+		</div>
+
+		<button class="menu-button" id="menuBtn">☰ Menu</button>
+
+		<div class="overlay" id="overlay"></div>
+
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-header">
+				<button class="close-btn" id="closeBtn">×</button>
+				<h2>Navigation</h2>
+			</div>
+			<ul>
+				<li><a href="#home">🏠 Home</a></li>
+				<li><a href="#about">👤 About</a></li>
+				<li><a href="#services">⚙️ Services</a></li>
+				<li><a href="#portfolio">📁 Portfolio</a></li>
+				<li><a href="#contact">📧 Contact</a></li>
+				<li><a href="#blog">📝 Blog</a></li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h2>Welcome to my website!</h2>
+			<p>
+				Click the menu button to open the sidebar. I just learned how to make
+				this today!
+			</p>
+			<p>This sidebar slides in and out with animation. Pretty cool right?</p>
+			<p>
+				I used JavaScript to make it work. It was really hard but I figured it
+				out!
+			</p>
+
+			<h3>What I learned:</h3>
+			<p>- How to use position fixed</p>
+			<p>- How to make animations with CSS transitions</p>
+			<p>- How to use JavaScript to add and remove classes</p>
+			<p>- How to make buttons work with onclick events</p>
+
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+				veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+				commodo consequat.
+			</p>
+
+			<p>
+				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+				dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</p>
+		</div>
+
+		<script>
+			var menuBtn = document.getElementById("menuBtn");
+			var closeBtn = document.getElementById("closeBtn");
+			var sidebar = document.getElementById("sidebar");
+			var overlay = document.getElementById("overlay");
+			function openSidebar() {
+				sidebar.classList.add("open");
+				overlay.classList.add("show");
+			}
+			function closeSidebar() {
+				sidebar.classList.remove("open");
+				overlay.classList.remove("show");
+			}
+			menuBtn.onclick = openSidebar;
+			closeBtn.onclick = closeSidebar;
+			overlay.onclick = closeSidebar;
+			var menuItems = sidebar.querySelectorAll("a");
+			for (var i = 0; i < menuItems.length; i++) {
+				menuItems[i].onclick = function () {
+					closeSidebar();
+					alert("You clicked on: " + this.textContent);
+				};
+			}
+			document.addEventListener("keydown", function (event) {
+				if (event.key === "Escape") {
+					closeSidebar();
+				}
+			});
+		</script>
+	</body>
+</html>
