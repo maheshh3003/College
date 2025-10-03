@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Chat</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete" />
+  <style>
+    /* Basic reset and variables */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f4f7fb;
+      /* page background */
+      --panel: #ffffff;
+      /* chat panel */
+      --accent: #2563eb;
+      /* blue accent */
+      --muted: #6b7280;
+      /* secondary text */
+      --text: #0f172a;
+      /* primary text */
+      --border: #e6eef8;
+      /* light border */
+      --bubble: #f1f5f9;
+      /* message bubble */
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(180deg, var(--bg), #eef6ff);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      height: 78vh;
+      background: var(--panel);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    .app-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.03), transparent);
+    }
+
+    .app-header h1 {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .chats {
+      flex: 1 1 auto;
+      padding: 1rem;
+      overflow: auto;
+      background: transparent;
+    }
+
+    .composer {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .input {
+      background: var(--bubble);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+    }
+
+    .input:focus {
+      outline: none;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+      border-color: rgba(37, 99, 235, 0.25);
+    }
+
+    .name {
+      width: 160px;
+    }
+
+    .message {
+      flex: 1;
+    }
+
+    .send {
+      background: var(--accent);
+      color: white;
+      border: 0;
+      padding: 0.6rem 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .send:hover {
+      filter: brightness(1.03);
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      clip: rect(1px, 1px, 1px, 1px);
+      white-space: nowrap;
+    }
+
+    /* basic message presentation for elements added by JS */
+    .message-row {
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .message-row .message {
+      display: inline-block;
+      background: var(--bubble);
+      padding: 0.6rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      max-width: 72%;
+    }
+
+    .message-row .meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .message-row.me {
+      justify-content: flex-end;
+    }
+
+    .message-row.me .message {
+      background: var(--accent);
+      color: white;
+    }
+
+    @media (max-width: 520px) {
+      .name {
+        display: none;
+      }
+
+      .app {
+        height: 92vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>Realtime Chat APP</h1>
+    </header>
+
+    <main id="chats" class="chats"></main>
+
+    <div class="composer">
+      <label for="user-name" class="visually-hidden">Name</label>
+      <input type="text" name="user-name" id="user-name" value="" placeholder="Name" class="input name" />
+
+      <label for="user-text" class="visually-hidden">Message</label>
+      <input type="text" name="user-text" id="user-text" value="" placeholder="message" class="input message" />
+
+      <button id="btn" class="send">send</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { firebaseConfig } from "./config.js";
+    import { myfunction } from "./functions.js";
+
+    firebase.initializeApp(firebaseConfig);
+
+    let btn = document.getElementById("btn");
+    let para = document.getElementById("msg");
+
+    let golbalUid = null;
+
+    // adding message
+    btn.addEventListener("click", async () => {
+      console.log("clicked");
+
+      // inputs
+      let name = document.getElementById("user-name").value || "Guest";
+      let text = document.getElementById("user-text").value;
+
+      console.log(golbalUid);
+      if (golbalUid) {
+        await myfunction.updateMsg(name, text, golbalUid)
+      } else {
+        await myfunction.addMsg(name, text)
+      }
+
+
+      document.getElementById("user-name").value = "";
+      document.getElementById("user-text").value = "";
+    });
+
+    myfunction.getMsg();
+  </script>
+</body>
+
+</html>
