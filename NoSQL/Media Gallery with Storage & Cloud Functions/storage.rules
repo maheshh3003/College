@@ -1,0 +1,46 @@
+rules_version = '2';
+
+// Storage rules for the MediaChat demo
+// - Files are stored under the `em-profile/` folder
+// - Read/list are allowed to everyone (so the client can list and show gallery images)
+// - Create (upload) is allowed only for authenticated users
+//   and the upload must include `owner` in custom metadata equal to the authenticated uid
+// - Update/delete are allowed only if the existing object's `owner` metadata equals the authenticated uid
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Match everything under em-profile/
+    match /em-profile/{allPaths=**} {
+
+      // Allow anyone to read/download objects
+      allow read: if true;
+
+      // Allow listing (the client uses listAll()). If you want to restrict listing to
+      // authenticated users change this to `request.auth != null`.
+      allow list: if true;
+
+      // Allow uploads (create) only from authenticated users and only for image content types.
+      // Require that the client sets custom metadata `owner` to their uid on upload so future
+      // deletes/updates can be validated server-side.
+      allow create: if request.auth != null
+                     && request.resource.size < 10 * 1024 * 1024 // max 10 MB per file (adjustable)
+                     && request.resource.contentType.matches('image/.*')
+                     && request.resource.metadata.owner == request.auth.uid;
+
+      // Allow updating metadata only if the existing resource owner matches the authenticated user
+      allow update: if request.auth != null
+                     && resource.metadata.owner == request.auth.uid;
+
+      // Allow delete only if the existing resource owner matches the authenticated user
+      allow delete: if request.auth != null
+                     && resource.metadata.owner == request.auth.uid;
+    }
+
+    // Deny everything else by default
+    match /{allPaths=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!-- 
+  Firebase Media Gallery Demo
+  
+  Quick Setup:
+  1. Replace firebaseConfig values below with your Firebase project credentials
+  2. Deploy storage.rules and firestore.rules to your Firebase project
+  3. Enable Authentication (Google provider) in Firebase Console
+  4. Serve this file via a web server (not file://) for proper Firebase SDK functionality
+  
+  Test: python3 -m http.server 8000
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <meta http-equiv="Access-Control-Allow-Methods" content="GET, POST, PUT, DELETE, OPTIONS" />
+  <meta http-equiv="Access-Control-Allow-Headers" content="Origin, Content-Type, X-Auth-Token" />
+  <title>Firebase Media Gallery</title>
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+  <!-- storage -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging-compat.js"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card: #fff;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --border: #e6eef8
+    }
+
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: #0f172a;
+      padding: 24px
+    }
+
+    #file {
+      display: inline-block
+    }
+
+    #uploadBtn {
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 8px
+    }
+
+    #uploadBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed
+    }
+
+    .toolbar {
+      margin-bottom: 16px
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 16px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch
+    }
+
+    .thumb {
+      width: 100%;
+      height: 120px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #f3f4f6
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .card .actions {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between
+    }
+
+    .btn-sm {
+      padding: 6px 8px;
+      font-size: 13px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 0
+    }
+
+    .progress {
+      height: 6px;
+      background: #e6eef8;
+      border-radius: 6px;
+      overflow: hidden
+    }
+
+    .progress>i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #4f46e5);
+      width: 0%
+    }
+
+    @media (max-width:480px) {
+      .thumb {
+        height: 96px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toolbar">
+    <input type="file" name="" id="file" accept="image/*" />
+    <button id="uploadBtn">Upload</button>
+    <span id="authState" style="margin-left:12px;font-size:14px;color:var(--muted)"></span>
+    <button id="signInBtn" class="btn-sm" style="margin-left:8px">Sign in (Google)</button>
+    <button id="anonBtn" class="btn-sm">Sign in (Anon)</button>
+    <button id="signOutBtn" class="btn-sm" style="display:none">Sign out</button>
+    <div id="uploadProgress" style="display:inline-block;vertical-align:middle;margin-left:12px;width:220px">
+      <div class="progress" style="display:none"><i></i></div>
+    </div>
+  </div>
+
+  <div id="gallery" aria-live="polite"></div>
+
+  <script>
+    //Api keys are removed to protect privacy
+    const firebaseConfig = {
+      apiKey: FIREBASE_API_KEY,
+      authDomain: FIREBASE_AUTH_DOMAIN,
+      databaseURL: FIREBASE_DATABASE_URL,
+      projectId: FIREBASE_PROJECT_ID,
+      storageBucket: FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+      appId: FIREBASE_APP_ID,
+    };
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      console.log('Firebase initialized successfully');
+    } catch (e) {
+      console.error('Firebase initialization failed:', e);
+      alert('Firebase configuration error. Please check your config values.');
+    }
+
+    // initialize optional services
+    try { firebase.analytics(); } catch (e) { console.info('Analytics not initialized', e) }
+
+    let db;
+    try {
+      db = firebase.firestore();
+    } catch (e) {
+      console.error('Firestore initialization failed:', e);
+    }
+
+    const messaging = firebase.messaging && firebase.messaging();
+
+    // get the btn
+    const btn = document.getElementById("uploadBtn");
+    const fileInput = document.getElementById('file');
+    const gallery = document.getElementById('gallery');
+    const progressWrap = document.querySelector('.progress');
+    const progressBar = document.querySelector('.progress > i');
+    const signInBtn = document.getElementById('signInBtn');
+    const anonBtn = document.getElementById('anonBtn');
+    const signOutBtn = document.getElementById('signOutBtn');
+    const authState = document.getElementById('authState');
+
+    // auth helpers
+    signInBtn.addEventListener('click', () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).catch(e => alert('Sign-in failed: ' + e.message));
+    });
+
+    anonBtn.addEventListener('click', () => {
+      firebase.auth().signInAnonymously().catch(e => alert('Anon sign-in failed: ' + e.message));
+    });
+
+    signOutBtn.addEventListener('click', () => { firebase.auth().signOut(); });
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        authState.innerText = user.isAnonymous ? 'Signed in anonymously' : `Signed in: ${user.email || user.uid}`;
+        signOutBtn.style.display = 'inline-block';
+        signInBtn.style.display = 'none';
+        anonBtn.style.display = 'none';
+      } else {
+        authState.innerText = 'Not signed in';
+        signOutBtn.style.display = 'none';
+        signInBtn.style.display = 'inline-block';
+        anonBtn.style.display = 'inline-block';
+      }
+    });
+
+    btn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) return alert('Please select a file to upload');
+      if (!firebase.auth().currentUser) return alert('You must sign in to upload files');
+      btn.disabled = true;
+      try {
+        await uploadMediaFile(file);
+      } finally {
+        btn.disabled = false;
+        fileInput.value = '';
+      }
+    });
+
+    // upload with progress and refresh gallery
+    async function uploadMediaFile(file) {
+      try {
+        const bucketRef = firebase.storage().ref();
+        const folderRef = bucketRef.child("em-profile");
+        const fileRef = folderRef.child(file.name);
+
+        // Set metadata with owner for Storage rules compliance
+        const user = firebase.auth().currentUser;
+        const metadata = {
+          contentType: file.type,
+          customMetadata: {
+            owner: user.uid
+          }
+        };
+
+        const uploadTask = fileRef.put(file, metadata);
+        progressWrap.style.display = 'block';
+
+        uploadTask.on('state_changed', snapshot => {
+          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          progressBar.style.width = pct + '%';
+        }, err => {
+          console.error(err);
+          progressWrap.style.display = 'none';
+        }, async () => {
+          progressBar.style.width = '100%';
+          setTimeout(() => { progressWrap.style.display = 'none'; progressBar.style.width = '0%'; }, 700);
+          // upload complete: write metadata to Firestore and refresh gallery
+          const url = await fileRef.getDownloadURL();
+          const user = firebase.auth().currentUser;
+          try {
+            await db.collection('media').add({
+              name: file.name,
+              path: fileRef.fullPath,
+              url,
+              size: file.size,
+              contentType: file.type,
+              owner: user ? user.uid : null,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          } catch (e) { console.error('Failed to write metadata', e) }
+          try { firebase.analytics && firebase.analytics().logEvent('media_upload', { file: file.name, uid: (user && user.uid) || null }); } catch (e) { }
+          await getDownloadURL();
+        });
+      } catch (e) { console.error(e); }
+    }
+
+    // list and display files from em-profile
+    async function getDownloadURL() {
+      try {
+        gallery.innerHTML = '';
+        const folderRef = firebase.storage().ref().child('em-profile');
+        const list = await folderRef.listAll();
+        // items is an array of references
+        for (const itemRef of list.items) {
+          const url = await itemRef.getDownloadURL();
+          const name = itemRef.name || itemRef.fullPath;
+          const path = itemRef.fullPath;
+          // try to read owner from Storage metadata (preferred) or Firestore fallback
+          let owner = null;
+          try {
+            const metadata = await itemRef.getMetadata();
+            owner = metadata.customMetadata && metadata.customMetadata.owner;
+          } catch (e) {
+            // fallback to Firestore if Storage metadata unavailable
+            try {
+              const q = await db.collection('media').where('path', '==', path).limit(1).get();
+              if (!q.empty) owner = q.docs[0].data().owner;
+            } catch (e2) { /* ignore */ }
+          }
+          renderGalleryItem({ name, url, path, owner });
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    function renderGalleryItem({ name, url, path, owner }) {
+      const card = document.createElement('div'); card.className = 'card';
+      const img = document.createElement('img'); img.className = 'thumb'; img.src = url; img.alt = name;
+      const meta = document.createElement('div'); meta.className = 'meta'; meta.innerText = name;
+      const actions = document.createElement('div'); actions.className = 'actions';
+      const dl = document.createElement('a'); dl.className = 'btn-sm'; dl.href = url; dl.target = '_blank'; dl.rel = 'noreferrer noopener'; dl.innerText = 'Open';
+      const del = document.createElement('button'); del.className = 'btn-sm'; del.innerText = 'Delete';
+      del.addEventListener('click', () => deleteFile(path, card));
+      // only show delete if signed-in and owner matches (or if no metadata, allow for signed-in users)
+      const user = firebase.auth().currentUser;
+      if (!user) del.style.display = 'none';
+      else if (owner && user.uid !== owner) del.style.display = 'none';
+      actions.appendChild(dl); actions.appendChild(del);
+
+      card.appendChild(img); card.appendChild(meta); card.appendChild(actions);
+      gallery.appendChild(card);
+    }
+
+    async function deleteFile(path, cardEl) {
+      if (!confirm('Delete this file?')) return;
+      try {
+        const ref = firebase.storage().ref().child(path);
+        await ref.delete();
+        cardEl.remove();
+      } catch (e) { console.error(e); alert('Delete failed'); }
+    }
+
+    // initial load
+    getDownloadURL();
+  </script>
+</body>
+
+</html>
