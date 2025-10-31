@@ -1,0 +1,47 @@
+vigilant@Maheshs-MacBook-Air ~ % cd /Users/vigilant/Documents/Sem_2Sprint_2/OS 
+vigilant@Maheshs-MacBook-Air OS % pwd
+/Users/vigilant/Documents/Sem_2Sprint_2/OS
+vigilant@Maheshs-MacBook-Air OS % ls
+vigilant@Maheshs-MacBook-Air OS % clear 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vigilant@Maheshs-MacBook-Air OS % cd /Users/vigilant/Documents/Sem_2Sprint_2/OS  
+vigilant@Maheshs-MacBook-Air OS % pwd
+/Users/vigilant/Documents/Sem_2Sprint_2/OS
+vigilant@Maheshs-MacBook-Air OS % ls
+Day1
+vigilant@Maheshs-MacBook-Air OS % ls -l
+total 0
+drwxr-xr-x  2 vigilant  staff  64 27 Oct 14:50 Day1
+vigilant@Maheshs-MacBook-Air OS % man ls
+
+zsh: suspended  man ls
+vigilant@Maheshs-MacBook-Air OS % 
+
+
+
+
+
+
+
+
+
+
+
