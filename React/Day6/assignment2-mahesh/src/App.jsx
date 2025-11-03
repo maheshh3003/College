@@ -8,38 +8,24 @@ function App() {
   const [course, setCourse] = useState("")
 
   function addStudent() {
-    if (name && age && course) {
-      const newStudent = { name, age, course }
-      setStudents([...students, newStudent])
-      setName("")
-      setAge("")
-      setCourse("")
-    }
+    const s = { name: name, age: age, course: course }
+    students.push(s)
+    setStudents([...students])
+    setName("")
+    setAge("")
+    setCourse("")
   }
 
   return (
     <div>
       <h2>Student List</h2>
+      <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+      <input placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+      <input placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
+      <button onClick={addStudent}>Add</button>
 
-      <input
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        placeholder="Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-      <input
-        placeholder="Course"
-        value={course}
-        onChange={(e) => setCourse(e.target.value)}
-      />
-      <button onClick={addStudent}>Add Student</button>
-
-      {students.map((s, index) => (
-        <Student key={index} name={s.name} age={s.age} course={s.course} />
+      {students.map((x, i) => (
+        <Student key={i} name={x.name} age={x.age} course={x.course} />
       ))}
     </div>
   )
