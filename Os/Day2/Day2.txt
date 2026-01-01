@@ -1,0 +1,102 @@
+vigilant@Maheshs-MacBook-Air ~ % cd /Users/vigilant/Documents/Sem_2Sprint_2/OS 
+vigilant@Maheshs-MacBook-Air OS % pwd
+/Users/vigilant/Documents/Sem_2Sprint_2/OS
+vigilant@Maheshs-MacBook-Air OS % ls
+vigilant@Maheshs-MacBook-Air OS % clear 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vigilant@Maheshs-MacBook-Air OS % cd /Users/vigilant/Documents/Sem_2Sprint_2/OS  
+vigilant@Maheshs-MacBook-Air OS % pwd
+/Users/vigilant/Documents/Sem_2Sprint_2/OS
+vigilant@Maheshs-MacBook-Air OS % ls
+Day1
+vigilant@Maheshs-MacBook-Air OS % ls -l
+total 0
+drwxr-xr-x  2 vigilant  staff  64 27 Oct 14:50 Day1
+vigilant@Maheshs-MacBook-Air OS % man ls
+
+zsh: suspended  man ls
+vigilant@Maheshs-MacBook-Air OS % cat demo1.txt
+cat: demo1.txt: No such file or directory
+vigilant@Maheshs-MacBook-Air OS % cat > demo1.txt
+Hello
+Welcome
+Good to see u^C  
+vigilant@Maheshs-MacBook-Air OS % cat demo1.txt
+Hello
+Welcome
+Good to see u%                                                                  vigilant@Maheshs-MacBook-Air OS % cat -n demo1.txt 
+     1	Hello
+     2	Welcome
+     3	Good to see u%                                                          vigilant@Maheshs-MacBook-Air OS % cat >> demo1.txt                   
+this is os lecture     
+vigilant@Maheshs-MacBook-Air OS % cat >> demo1.txt
+welcome to ITM
+how r u%                                                                        vigilant@Maheshs-MacBook-Air OS % cat >> demo1.txt
+^C
+vigilant@Maheshs-MacBook-Air OS % cat -n demo1.txt
+     1	Hello
+     2	Welcome
+     3	Good to see uthis is os lecture 
+     4	welcome to ITM
+     5	how r u%                                                                vigilant@Maheshs-MacBook-Air OS % ls -l | grep demo1.txt
+-rw-r--r--@ 1 vigilant  staff  69 28 Oct 14:27 demo1.txt
+vigilant@Maheshs-MacBook-Air OS % 
+vigilant@Maheshs-MacBook-Air OS % chmod 760 demo1.txt
+vigilant@Maheshs-MacBook-Air OS % ls -l | grep demo1.txt
+-rwxrw----@ 1 vigilant  staff  69 28 Oct 14:27 demo1.txt
+vigilant@Maheshs-MacBook-Air OS % echo -e 
+
+vigilant@Maheshs-MacBook-Air OS % echo -e "apple\nbanana\norange\npineapple\nbanana pie" > fruits.txt
+vigilant@Maheshs-MacBook-Air OS % cat fruits.txt 
+apple
+banana
+orange
+pineapple
+banana pie
+vigilant@Maheshs-MacBook-Air OS % grep "banana" fruits.txt
+banana
+banana pie
+vigilant@Maheshs-MacBook-Air OS % grep -i "Banana" fruits.txt 
+banana
+banana pie
+vigilant@Maheshs-MacBook-Air OS % grep -w "banana" fruits.txt
+banana
+banana pie
+vigilant@Maheshs-MacBook-Air OS % grep -c "banana" fruits.txt
+2
+vigilant@Maheshs-MacBook-Air OS % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air OS % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air OS % chmod 777 demoshell.sh 
+vigilant@Maheshs-MacBook-Air OS % ./demoshell.sh 
+hello
+vigilant@Maheshs-MacBook-Air OS % vi demoshell.sh       
+vigilant@Maheshs-MacBook-Air OS % ./demoshell.sh 
+hello
+What's your name?
+Mahesh
+Helo Mahesh ! nice to meet you
+vigilant@Maheshs-MacBook-Air OS % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air OS % ./demoshell.sh 
+hello
+What's your name?
+Mahesh
+Helo Mahesh ! nice to meet you
+vigilant@Maheshs-MacBook-Air OS % 
