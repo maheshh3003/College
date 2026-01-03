@@ -1,0 +1,93 @@
+Last login: Fri Oct 31 13:50:05 on ttys004
+vigilant@Maheshs-MacBook-Air ~ % shell
+zsh: command not found: shell
+vigilant@Maheshs-MacBook-Air ~ % chmod
+usage:	chmod [-fhv] [-R [-H | -L | -P]] [-a | +a | =a  [i][# [ n]]] mode|entry file ...
+	chmod [-fhv] [-R [-H | -L | -P]] [-E | -C | -N | -i | -I] file ...
+vigilant@Maheshs-MacBook-Air ~ % ls
+Apple_Edited.pptx	iCloud Drive (Archive)	package-lock.json
+Applications		Library			package.json
+Desktop			Movies			Pictures
+Documents		Music			Public
+Downloads		node_modules		tempyyyy
+vigilant@Maheshs-MacBook-Air ~ % cd /Users/vigilant/Documents/Sem_2Sprint_2/OS/Day4
+vigilant@Maheshs-MacBook-Air Day4 % mkdir demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh 
+vigilant@Maheshs-MacBook-Air Day4 % ls
+demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % cat demoshell.sh
+cat: demoshell.sh: Is a directory
+vigilant@Maheshs-MacBook-Air Day4 % cat demoshell.sh
+cat: demoshell.sh: No such file or directory
+vigilant@Maheshs-MacBook-Air Day4 % echo demoshell.sh
+demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ls -l
+total 0
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ls
+vigilant@Maheshs-MacBook-Air Day4 % echo >> demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ls
+demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh     
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ./fcfs.sh
+zsh: no such file or directory: ./fcfs.sh
+vigilant@Maheshs-MacBook-Air Day4 % ls
+demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ./demoshell.sh
+zsh: permission denied: ./demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ls
+demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % chmod +x demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ./demoshell.sh       
+First Come First Serve (FCFS) Scheduling
+---------------------------------------
+Enter the number of processes: 4
+Enter Arrival Time for Process 1: 0
+Enter Burst Time for Process 1: 5
+Enter Arrival Time for Process 2: 1
+Enter Burst Time for Process 2: 3
+Enter Arrival Time for Process 3: 2
+Enter Burst Time for Process 3: 8
+Enter Arrival Time for Process 4: 3
+Enter Burst Time for Process 4: 6
+
+--------------------------------------------------------------
+PID | Arrival | Burst | Completion | Turnaround | Waiting
+--------------------------------------------------------------
+ 1     0        5         5           5           05
+ 2     1        3         8           7           05
+ 3     2        8         16           14           05
+ 4     3        6         22           19           05
+--------------------------------------------------------------
+Average Turnaround Time: 11.25
+Average Waiting Time: 5.75
+--------------------------------------------------------------
+vigilant@Maheshs-MacBook-Air Day4 % vi demoshell.sh
+vigilant@Maheshs-MacBook-Air Day4 % ./demoshell.sh 
+First Come First Serve (FCFS) Scheduling
+---------------------------------------
+Enter the number of processes: 4
+Enter Arrival Time for Process 1: 0
+Enter Burst Time for Process 1: 5
+Enter Arrival Time for Process 2: 1
+Enter Burst Time for Process 2: 3
+Enter Arrival Time for Process 3: 2
+Enter Burst Time for Process 3: 8
+Enter Arrival Time for Process 4: 3
+Enter Burst Time for Process 4: 6
+
+--------------------------------------------------------------
+PID | Arrival | Burst | Completion | Turnaround | Waiting
+--------------------------------------------------------------
+ 1     0        5         5           5           0
+ 2     1        3         8           7           4
+ 3     2        8         16           14           6
+ 4     3        6         22           19           13
+--------------------------------------------------------------
+Average Turnaround Time: 11.25
+Average Waiting Time: 5.75
+--------------------------------------------------------------
+vigilant@Maheshs-MacBook-Air Day4 % 
