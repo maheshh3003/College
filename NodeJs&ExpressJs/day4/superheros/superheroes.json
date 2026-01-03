@@ -1,0 +1,172 @@
+[
+    {
+        "id": "e6f9a7a3-9b12-4c8d-bd84-0a0a4d2a5b93",
+        "name": "Spider-Man",
+        "age": 25,
+        "weapons": [
+            "Web Shooters"
+        ],
+        "planet": "Earth",
+        "universe": "Marvel",
+        "powers": [
+            "Wall-Crawling",
+            "Spider Sense",
+            "Super Agility",
+            "Super Strength"
+        ]
+    },
+    {
+        "id": "a4d3f3e8-51b9-4c3e-a637-2b8f5e04bcb2",
+        "name": "Batman",
+        "age": 35,
+        "weapons": [
+            "Batarangs",
+            "Grapple Gun",
+            "Smoke Bombs"
+        ],
+        "planet": "Earth",
+        "universe": "DC",
+        "powers": [
+            "Peak Human Condition",
+            "Martial Arts",
+            "Stealth",
+            "Genius Intellect"
+        ]
+    },
+    {
+        "id": "9c33f081-68a5-49c3-bf3f-6577d89bb8e2",
+        "name": "Iron Man",
+        "age": 40,
+        "weapons": [
+            "Powered Armor Suit",
+            "Repulsor Rays",
+            "Missiles"
+        ],
+        "planet": "Earth",
+        "universe": "Marvel",
+        "powers": [
+            "Flight",
+            "Super Strength (via Suit)",
+            "Advanced Weaponry",
+            "Genius Inventor"
+        ]
+    },
+    {
+        "id": "e2b1b55d-df86-4b25-9406-9f2b0b4f3c88",
+        "name": "Superman",
+        "age": 30,
+        "weapons": [
+            "None"
+        ],
+        "planet": "Krypton",
+        "universe": "DC",
+        "powers": [
+            "Flight",
+            "Heat Vision",
+            "Super Strength",
+            "X-Ray Vision"
+        ]
+    },
+    {
+        "id": "4e1e13c3-3cb1-4459-97c4-95d7e18bff12",
+        "name": "Wonder Woman",
+        "age": 28,
+        "weapons": [
+            "Lasso of Truth",
+            "Bracelets of Submission",
+            "Sword",
+            "Shield"
+        ],
+        "planet": "Themyscira",
+        "universe": "DC",
+        "powers": [
+            "Super Strength",
+            "Flight",
+            "Combat Mastery",
+            "Durability"
+        ]
+    },
+    {
+        "id": "b7f5cdd1-41a3-4dbb-bc64-c8b96e8c1e14",
+        "name": "Thor",
+        "age": 1500,
+        "weapons": [
+            "Mjolnir",
+            "Stormbreaker"
+        ],
+        "planet": "Asgard",
+        "universe": "Marvel",
+        "powers": [
+            "Godly Strength",
+            "Lightning Control",
+            "Flight",
+            "Immortality"
+        ]
+    },
+    {
+        "id": "5a2e82e1-c40e-4a48-9eb4-6a1cc1a64047",
+        "name": "The Flash",
+        "age": 27,
+        "weapons": [
+            "None"
+        ],
+        "planet": "Earth",
+        "universe": "DC",
+        "powers": [
+            "Super Speed",
+            "Time Travel",
+            "Speed Healing",
+            "Phasing"
+        ]
+    },
+    {
+        "id": "dc19c23e-9abf-4f6c-953b-0a4a321b78e1",
+        "name": "Black Panther",
+        "age": 32,
+        "weapons": [
+            "Vibranium Suit",
+            "Claws",
+            "Energy Daggers"
+        ],
+        "planet": "Earth",
+        "universe": "Marvel",
+        "powers": [
+            "Enhanced Strength",
+            "Agility",
+            "Reflexes",
+            "Strategic Mind"
+        ]
+    },
+    {
+        "id": "f1d7b25a-b32b-48cf-b923-3b19e8f94b75",
+        "name": "Invincible",
+        "age": 18,
+        "weapons": [
+            "None"
+        ],
+        "planet": "Viltrum",
+        "universe": "Image Comics",
+        "powers": [
+            "Flight",
+            "Super Strength",
+            "Durability",
+            "Regeneration"
+        ]
+    },
+    {
+        "name": "Spider-Man",
+        "age": 25,
+        "weapons": [
+            "Web Shooters"
+        ],
+        "planet": "Earth",
+        "universe": "Marvel",
+        "powers": [
+            "Wall-Crawling",
+            "Spider Sense",
+            "Super Agility",
+            "Super Strength"
+        ],
+        "id": "ab5f7917-3593-46e1-b618-91d795b9137f"
+    }
+]
